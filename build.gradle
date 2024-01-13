@@ -1,0 +1,68 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version "$springBootVersion"
+	id 'io.spring.dependency-management' version "$springDependencyManagementVersion"
+}
+
+group = 'ru.kranbe'
+version = '1.0.0'
+sourceCompatibility = '20'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation "org.springframework.boot:spring-boot-starter-data-jdbc"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+//	implementation "org.springframework.boot:spring-boot-starter-data-redis" // TODO Cache
+	implementation "org.springframework.boot:spring-boot-configuration-processor"
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // для форматирования писем
+
+	implementation 'commons-io:commons-io:2.13.0'
+	implementation 'commons-validator:commons-validator:1.7'
+
+
+	// React
+//	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebFlux
+//	implementation "org.springframework.boot:spring-boot-starter-data-r2dbc" // WebFlux
+//	implementation "io.asyncer:r2dbc-mysql:$r2dbcVersion" // WebFlux
+
+//	implementation "org.springframework.session:spring-session-core"
+
+	implementation "org.liquibase:liquibase-core:$liquibaseVersion"
+	implementation "mysql:mysql-connector-java:$mySqlVersion"
+
+	implementation "org.projectlombok:lombok:$lombokVersion"
+
+	implementation "org.mapstruct:mapstruct:$mapStructVersion"
+	implementation "org.hibernate.validator:hibernate-validator:$hibernateVersion"
+	implementation "jakarta.validation:jakarta.validation-api:$jakartaValidationApiVersion"
+
+	implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+	runtimeOnly "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
+	runtimeOnly "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
+
+	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion"
+
+	// implementation 'io.minio:minio:8.5.3' // TODO files
+
+	compileOnly "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+	annotationProcessor "org.mapstruct:mapstruct-processor:$mapStructVersion"
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	//testImplementation 'io.projectreactor:reactor-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+	launchScript()
+}

@@ -1,0 +1,96 @@
+server:
+  port: ${SPRING_PORT}
+  address: ${SPRING_ADDRESS}
+  forward-headers-strategy: framework
+
+spring:
+  config:
+#    import: optional:file:.env_dev[.properties]
+    import: optional:file:.env_prod[.properties]
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT} #25, SSL 465, TLS 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        debug: true
+        transport.protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+    ## TODO REDIS
+    #  cache:
+    #    type: redis
+    #    cache-names: redis-cache
+    #  data:
+    #    redis:
+    #      host: ${REDIS_HOST}
+    #      port: ${REDIS_PORT}
+    #      password: ${REDIS_PASSWORD}
+    #datasource:
+    #  r2dbc:
+    #    url: r2dbc:pool:mysql://${HOST}:${MYSQL_PORT}/${MYSQL_DB}?allowMultiQueries=true
+    #    #url: jdbc:mysql://${HOST}:${MYSQL_PORT}/${MYSQL_DB}?allowMultiQueries=true
+    #    username: ${MYSQL_USER}
+    #    password: ${MYSQL_PASSWORD}
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB}?allowMultiQueries=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      max-lifetime: 500000 # mysql wait_timeout=500
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yaml
+    enabled: true
+    default-schema: ${MYSQL_DB}
+
+#  liquibase:
+#    url: jdbc:mysql://${HOST}:${MYSQL_PORT}/${MYSQL_DB}?allowMultiQueries=true
+#    change-log: classpath:liquibase/db.changelog.yaml
+#    user: ${MYSQL_USER}
+#    password: ${MYSQL_PASSWORD}
+#mybatis:
+#  mapper-locations: classpath:mybatis/mapper/*.xml
+
+###### JPA Properties ######
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    generate-ddl: true
+    show-sql: true
+
+security:
+  jwt:
+    secret: ${JWT_SECRET} # secret word
+    access: 1 # hours
+    refresh: 30 # days
+#    access: 3600000 # in ms, 3 600 000 = 1 hour
+#    refresh: 2592000000 # in ms, 2 592 000 000 = 30 days
+
+springdoc:
+  override-with-generic-response: false
+
+logging:
+  level:
+    org:
+      springframework: WARN
+      hibernate: WARN
+    com:
+      springsecurity:
+        demo: DEBUG
+
+# TODO file upload download
+#minio:
+#  bucket: ${MINIO_BUCKET}
+#  url: ${MINIO_URL}
+#  accessKey: ${MINIO_ACCESS_KEY}
+#  secretKey: ${MINIO_SECRET_KEY}
